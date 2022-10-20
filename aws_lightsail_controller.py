@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import subprocess
 import uuid
 import os
@@ -163,16 +164,16 @@ class LightSail:
             self.__log("[error][_attach_static_ip]", "_attach_static_ip" + str(e))
 
     def _replace_instance_ip(self):
-        if (
-            int(datetime.now(self.__CN_timezone).strftime("%H")) >= 1
-            and int(datetime.now(self.__CN_timezone).strftime("%H")) <= 9
-        ) or (
-            int(datetime.now(self.__CN_timezone).strftime("%H")) >= 15
-            and int(datetime.now(self.__CN_timezone).strftime("%H")) >= 19
-        ):
-            self.__log(f"remote NAS closed, don't replace ip")
-            self._post_ip_address()
-            return
+        # if (
+        #     int(datetime.now(self.__CN_timezone).strftime("%H")) >= 1
+        #     and int(datetime.now(self.__CN_timezone).strftime("%H")) <= 9
+        # ) or (
+        #     int(datetime.now(self.__CN_timezone).strftime("%H")) >= 15
+        #     and int(datetime.now(self.__CN_timezone).strftime("%H")) >= 19
+        # ):
+        #     self.__log(f"remote NAS closed, don't replace ip")
+        #     self._post_ip_address()
+        #     return
         try:
             result = self._allocateIP()
             time.sleep(1.5)
