@@ -17,7 +17,7 @@ class LightSail:
                 self._can_connect = 0
                 udpClient.sendto((f"{gethostbyname(self.__target_server)},{str(self._can_connect)}").encode(encoding="utf-8"), (self.__target_server, 7171))
                 print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][update_this_server]Updated reachable={this_docker_ipv4},{self._can_connect}")
-                time.sleep(60)
+                time.sleep(10)
             except Exception as e:
                 time.sleep(60)
                 print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][update_this_server]Error: {str(e)}")

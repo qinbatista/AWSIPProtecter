@@ -76,7 +76,7 @@ class LightSail:
                 # print("_allocateIP a ip")
                 return result["operations"][0]["resourceName"]
         except Exception as e:
-            self.__log(f"[_allocateIP] error:" + str(e))
+            self.__log(f"[_allocateIP] error:{str(e)}")
             return -1
 
     def _get_static_ip(self):
@@ -92,9 +92,8 @@ class LightSail:
             for ip in _ips:
                 cli_command = f"aws lightsail --no-paginate  release-static-ip --static-ip-name {ip} --region {self.__region} --no-cli-pager"
                 result = self._exec_aws_command(cli_command)
-                # print("_release_static_ip released a ip")
         except Exception as e:
-            self.__log(f"[_release_static_ip] error:" + str(e) + " result:" + result)
+            self.__log(f"[_release_static_ip] error:{str(e)} result:{result}")
             return -1
 
     def _get_unattached_static_ips(self):
@@ -107,7 +106,7 @@ class LightSail:
                     unattached_ips.append(ip["name"])
             return unattached_ips
         except Exception as e:
-            self.__log(f"[_get_unattached_static_ips] error:" + str(e) + " result:" + result)
+            self.__log(f"[_get_unattached_static_ips] error:{str(e)} result:{result}")
             return -1
 
     def _check_instance_ip_state(self):
@@ -125,6 +124,7 @@ class LightSail:
                         self.__ave_time = last_time.seconds
                     else:
                         self.__ave_time = (self.__ave_time + last_time.seconds) / 2
+                    print(f"| Used:{ difference.seconds:2.2f} seconds | Duration:{last_time.seconds/3600:2.2f} hours | Ave:{self.__ave_time/3600:2.2f} hours | Count:{self.__received_count}")
                     self.__log(f"| Used:{ difference.seconds:2.2f} seconds | Duration:{last_time.seconds/3600:2.2f} hours | Ave:{self.__ave_time/3600:2.2f} hours | Count:{self.__received_count}")
                     self.__record_time = datetime.now(self.__CN_timezone)
                     self.__received_count = 0
@@ -141,9 +141,9 @@ class LightSail:
             if result["operations"][0]["status"] == "Succeeded":
                 self.__log("_attach_static_ip success")
             else:
-                self.__log("[error][_attach_static_ip]", "_attach_static_ip" + str(result))
+                self.__log(f"[error][_attach_static_ip]_attach_static_ip:{str(result)}")
         except Exception as e:
-            self.__log("[error][_attach_static_ip]", "_attach_static_ip" + str(e))
+            self.__log(f"[error][_attach_static_ip]_attach_static_ip:{str(result)}")
 
     def _replace_instance_ip(self):
         try:
@@ -155,7 +155,7 @@ class LightSail:
                 result = self._release_static_ip(self._get_unattached_static_ips())
                 time.sleep(1.5)
         except Exception as e:
-            self.__log("_replace_instance_ip" + str(e))
+            self.__log(f"_replace_instance_ip:{str(e)}")
 
     def _get_host_ip(self):
         try:
@@ -163,9 +163,7 @@ class LightSail:
             # self.__log("_get_host_ip", text)
             return text
         except Exception as e:
-            self.__log(
-                f"[_get_host_ip]using ip {self.__current_ip_from_udp}, error:" + str(e)
-            )
+            self.__log(f"[_get_host_ip]using ip {self.__current_ip_from_udp}, error:" + str(e))
             return self.__current_ip_from_udp
 
     def _test_log(self):
