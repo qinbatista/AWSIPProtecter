@@ -112,9 +112,9 @@ class LightSail:
     def _check_instance_ip_state(self):
         while True:
             try:
-                self.__received_count = self.__received_count - 10
+                self.__received_count = self.__received_count - 1
                 # self.__log(f"self.__received_count={self.__received_count}")
-                if self.__received_count <= -300 or self.__inaccessible_count >= 3:
+                if self.__received_count <= -60*24 or self.__inaccessible_count >= 5:
                     first_time = datetime.now(self.__CN_timezone)
                     self._replace_instance_ip()
                     second_time = datetime.now(self.__CN_timezone)
